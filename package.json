@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.2",
   "name": "babel-plugin-webpack-modules",
   "description": "babel 6 plugin which allows to use webpack modules",
   "main": "build/index.js",
