@@ -43,21 +43,10 @@ function injectModulesDirectories(modulesDirectories) {
   };
 }
 
-export default function({ types: t }) { // eslint-disable-line no-unused-vars
+export default function({ types: t }) {
   return {
     visitor: {
-      CallExpression(path, {
-              file: {
-                opts: {
-                  filename: filename // eslint-disable-line no-unused-vars
-                }
-              },
-              opts: {
-                config: configPath = 'webpack.config.js',
-                findConfig: findConfig = false
-              } = {}
-            }) {
-
+      CallExpression(path, { file: { opts: { filename: filename } }, opts: { config: configPath = 'webpack.config.js', findConfig: findConfig = false } = {} }) { // eslint-disable-line no-unused-vars
         // Get webpack config
         const conf = getConfig(configPath, findConfig);
 
@@ -68,6 +57,13 @@ export default function({ types: t }) { // eslint-disable-line no-unused-vars
 
         // exit if there's no modules config
         if(!conf.resolve || (!conf.resolve.modules && !conf.resolve.modulesDirectories)) {
+          return;
+        }
+
+        const { callee: { name: calleeName }, arguments: args } = path.node;
+
+        // Exit if it's not a require statement
+        if (calleeName !== 'require' || !args.length || !t.isStringLiteral(args[0])) {
           return;
         }
 
