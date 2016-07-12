@@ -1,5 +1,5 @@
 
-# babel-plugin-webpack-alias
+# babel-plugin-webpack-modules
 
 This Babel 6 plugin allows you to use webpack modules in Babel.
 
